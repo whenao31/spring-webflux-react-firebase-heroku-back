@@ -2,9 +2,17 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import { postQuestion } from '../actions/questionActions'
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from "react-redux";
 
-const FormPage = ({ dispatch, loading, redirect, userId }) => {
+const FormPage = () => {
+
+    const questionState = useSelector((state) => state.question);
+    const {loading, redirect} = questionState;
+
+    const userId = useSelector((state) => state.auth.uid);
+
+    const dispatch = useDispatch();
+
     const { register, handleSubmit } = useForm();
     const history = useHistory();
 
@@ -59,11 +67,4 @@ const FormPage = ({ dispatch, loading, redirect, userId }) => {
     );
 }
 
-const mapStateToProps = state => ({
-    loading: state.question.loading,
-    redirect: state.question.redirect,
-    hasErrors: state.question.hasErrors,
-    userId: state.auth.uid
-})
-
-export default connect(mapStateToProps)(FormPage)
+export default FormPage

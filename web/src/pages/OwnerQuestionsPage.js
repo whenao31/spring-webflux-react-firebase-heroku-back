@@ -1,10 +1,18 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 import { fetchOwnerQuestions, deleteQuestion } from '../actions/questionActions'
 import { Question } from '../components/Question'
 
-const OwnerQuestionsPage = ({ dispatch, loading, questions, hasErrors, redirect, userId }) => {
+const OwnerQuestionsPage = () => {
+    const questionState = useSelector((state) => state.question);
+    const {loading, questions, hasErrors, redirect} = questionState;
+
+    const userId = useSelector((state) => state.auth.uid);
+
+    const dispatch = useDispatch();
+
+    
     useEffect(() => {
         dispatch(fetchOwnerQuestions(userId))
     }, [dispatch, userId]);
@@ -38,12 +46,4 @@ const OwnerQuestionsPage = ({ dispatch, loading, questions, hasErrors, redirect,
     )
 }
 
-const mapStateToProps = state => ({
-    loading: state.question.loading,
-    questions: state.question.questions,
-    hasErrors: state.question.hasErrors,
-    redirect: state.question.redirect,
-    userId: state.auth.uid
-})
-
-export default connect(mapStateToProps)(OwnerQuestionsPage)
+export default OwnerQuestionsPage;

@@ -1,21 +1,23 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
 
 import { fetchQuestion } from '../actions/questionActions'
 
 import { Question } from '../components/Question'
 import { Answer } from '../components/Answer'
 import { Link } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 
-const SingleQuestionPage = ({
-  match,
-  dispatch,
-  question,
-  hasErrors,
-  loading,
-  userId
-}) => {
+const SingleQuestionPage = ({ match, }) => {
+
+  const questionState = useSelector((state) => state.question);
+  const {loading, question, hasErrors} = questionState;
+
+  const userId = useSelector((state) => state.auth.uid)
+
   const { id } = match.params
+
+  const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(fetchQuestion(id))
   }, [dispatch, id])
@@ -46,11 +48,4 @@ const SingleQuestionPage = ({
   )
 }
 
-const mapStateToProps = state => ({
-  question: state.question.question,
-  loading: state.question.loading,
-  hasErrors: state.question.hasErrors,
-  userId: state.auth.uid
-})
-
-export default connect(mapStateToProps)(SingleQuestionPage)
+export default SingleQuestionPage
