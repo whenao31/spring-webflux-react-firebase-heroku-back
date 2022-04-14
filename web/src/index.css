@@ -104,4 +104,21 @@ body {
   .right {
     float: right;
   }
+
+  .left {
+    float: left;
+  }
+
+  .input_numeric{
+    border-style: solid;
+     border-color: gray;
+     border-width: 1px;
+     border-radius: 2px;
+     padding: 1px;
+     height: 26px;
+     width: 40px;
+     text-align: left;
+     position: relative;
+     padding-left: 10px;
+   }
   
