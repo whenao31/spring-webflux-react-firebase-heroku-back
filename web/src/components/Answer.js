@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux'
 import Swal from 'sweetalert2';
+import { deleteAnswer, } from '../actions/questionActions';
 
 export const Answer = ({ answer }) => {
 
@@ -21,7 +22,7 @@ export const Answer = ({ answer }) => {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-          // dispatch(deleteQuestion(id))
+          dispatch(deleteAnswer(answer))
           Swal.fire(
               'Deleted!',
               `Your answer '${answer.id}' has been deleted.`,

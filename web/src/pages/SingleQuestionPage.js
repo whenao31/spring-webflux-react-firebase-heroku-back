@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from 'react-redux'
 const SingleQuestionPage = ({ match, }) => {
 
   const questionState = useSelector((state) => state.question);
-  const {loading, question, hasErrors} = questionState;
+  const {loading, question, hasErrors, redirect} = questionState;
 
   const userId = useSelector((state) => state.auth.uid)
 
@@ -20,7 +20,7 @@ const SingleQuestionPage = ({ match, }) => {
 
   useEffect(() => {
     dispatch(fetchQuestion(id))
-  }, [dispatch, id])
+  }, [dispatch, id, redirect])
 
   const renderQuestion = () => {
     if (loading.question) return <p>Loading question...</p>
