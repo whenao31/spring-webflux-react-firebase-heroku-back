@@ -109,16 +109,37 @@ body {
     float: left;
   }
 
-  .input_numeric{
-    border-style: solid;
-     border-color: gray;
-     border-width: 1px;
-     border-radius: 2px;
-     padding: 1px;
-     height: 26px;
-     width: 40px;
-     text-align: left;
-     position: relative;
-     padding-left: 10px;
-   }
+  .myfootertext{
+    color: rgb(156, 149, 146);
+    margin-left: -5rem;
+    float: center;
+  }
+
+  .myfooter{
+    background-color: black;
+    margin-top: 2rem;
+  }
+
+  .image_link{
+    margin-left: 8rem;
+    width: 4rem;
+    height: auto;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer_logo{
+    width: 80%;
+    height: auto;
+  }
+
+  .main-logo{
+    width: 70%;
+    height: 70;
+  }
+  .logo_link{
+    margin-left: 5rem;
+    width: 3rem;
+    height: auto;
+    margin-bottom: 0.1rem;
+  }
   

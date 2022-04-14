@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 const HomePage = ({children}) => (
   <section>
@@ -7,10 +7,10 @@ const HomePage = ({children}) => (
     <div>
       {children}
     </div>
-    <p>welcome to the question and answer app.</p>
-    <Link to="/questions" className="button">
+    <p>Welcome to the question and answer app.</p>
+    <NavLink to="/questions" className="button">
       View Questions
-    </Link>
+    </NavLink>
   
   </section>
 )
