@@ -2,12 +2,13 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { fetchQuestions } from '../actions/questionActions'
+import CategoriesFilter from '../components/CategoriesFilter'
 import { Question } from '../components/Question'
 
 const QuestionsPage = () => {
 
     const questionState = useSelector((state) => state.question);
-    const {loading, questions, hasErrors} = questionState;
+    const {loading, questions, hasErrors, } = questionState;
 
     const dispatch = useDispatch();
 
@@ -25,6 +26,7 @@ const QuestionsPage = () => {
     return (
         <section>
             <h1>Questions</h1>
+            <CategoriesFilter fetchFunction={fetchQuestions}/>
             {renderQuestions()}
         </section>
     )

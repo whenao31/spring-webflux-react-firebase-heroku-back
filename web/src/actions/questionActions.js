@@ -3,6 +3,8 @@ const URL_BASE = 'http://localhost:8080';
 export const LOADING = 'LOADING'
 export const LOADED_SUCCESS = 'LOADED_SUCCESS'
 export const LOADED_FAILURE = 'LOADED_FAILURE'
+export const CATEGORY_FILTER = 'CATEGORY_FILTER'
+export const CLEAR_FILTER = 'CLEAR_FILTER'
 
 export const loading = () => ({ type: LOADING })
 
@@ -138,3 +140,6 @@ export function deleteAnswer(answer) {
     }
 }
 
+export const filterByCategory = (category) => ({type: CATEGORY_FILTER, payload: category});
+
+export const clearFilter = () => ({type: CLEAR_FILTER});

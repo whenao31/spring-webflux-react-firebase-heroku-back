@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import Swal from 'sweetalert2'
 
 import { fetchOwnerQuestions, deleteQuestion } from '../actions/questionActions'
+import CategoriesFilter from '../components/CategoriesFilter'
 import { Question } from '../components/Question'
 
 const OwnerQuestionsPage = () => {
@@ -59,6 +60,7 @@ const OwnerQuestionsPage = () => {
     return (
         <section>
             <h1>Questions</h1>
+            <CategoriesFilter fetchFunction={fetchOwnerQuestions} userId={userId}/>
             {renderQuestions()}
         </section>
     )

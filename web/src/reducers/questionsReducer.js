@@ -5,7 +5,8 @@ export const initialState = {
   hasErrors: false,
   questions: [],
   question: {},
-  redirect: null
+  redirect: null,
+  filtered: false
 }
 
 export default function questionsReducer(state = initialState, action) {
@@ -13,9 +14,15 @@ export default function questionsReducer(state = initialState, action) {
     case actions.LOADING:
       return { ...state, loading: true }
     case actions.LOADED_SUCCESS:
-      return { ...state, ...action.payload, loading: false, hasErrors: false }
+      return { ...state, ...action.payload, loading: false, hasErrors: false, filtered: false }
     case actions.LOADED_FAILURE:
       return { ...state, loading: false, hasErrors: true }
+    case actions.CATEGORY_FILTER:
+      const category = action.payload;
+      const categoryFilteredList = state.questions.filter(question => question.category === category);
+      return { ...state, questions: categoryFilteredList, filtered: true }
+    case actions.CLEAR_FILTER:
+      return { ...state, filtered: false}
     default:
       return state
   }
