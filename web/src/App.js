@@ -18,17 +18,18 @@ import QuestionFormPage from './pages/QuestionFormPage'
 import AnswerFormPage from './pages/AnswerFormPage'
 import OwnerQuestionsPage from './pages/OwnerQuestionsPage'
 import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, SignIn, SignOut } from './firebase';
 
-firebase.initializeApp({
-  apiKey: "AIzaSyDFppjnE3PiDqZ1OlixWt40xLhvG6GsYVQ",
-  authDomain: "question-answers-app-3f0da.firebaseapp.com",
-  projectId: "question-answers-app-3f0da",
-  storageBucket: "question-answers-app-3f0da.appspot.com",
-  messagingSenderId: "930178625473",
-  appId: "1:930178625473:web:7d47ab9af63973337f0940"
-});
+// firebase.initializeApp({
+//   apiKey: "AIzaSyDFppjnE3PiDqZ1OlixWt40xLhvG6GsYVQ",
+//   authDomain: "question-answers-app-3f0da.firebaseapp.com",
+//   projectId: "question-answers-app-3f0da",
+//   storageBucket: "question-answers-app-3f0da.appspot.com",
+//   messagingSenderId: "930178625473",
+//   appId: "1:930178625473:web:7d47ab9af63973337f0940"
+// });
 
-const auth = firebase.auth();
+// const auth = firebase.auth();
 
 const App = ({ dispatch }) => {
   const [user] = useAuthState(auth);
@@ -71,29 +72,29 @@ const App = ({ dispatch }) => {
 }
 
 
-function SignIn() {
-  const signInWithGoogle = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider);
-  };
-  return <button className="button right" onClick={signInWithGoogle}>Sign in with google</button>;
-}
+// function SignIn() {
+//   const signInWithGoogle = () => {
+//     const provider = new firebase.auth.GoogleAuthProvider();
+//     auth.signInWithPopup(provider);
+//   };
+//   return <button className="button right" onClick={signInWithGoogle}>Sign in with google</button>;
+// }
 
-function SignOut({ dispatch }) {
-  return (
-    auth.currentUser && (
-      <button
-        className="button right"
-        onClick={() => {
-          dispatch(logout())
-          auth.signOut();
-        }}
-      >
-        Sign out
-      </button>
-    )
-  );
-}
+// function SignOut({ dispatch }) {
+//   return (
+//     auth.currentUser && (
+//       <button
+//         className="button right"
+//         onClick={() => {
+//           dispatch(logout())
+//           auth.signOut();
+//         }}
+//       >
+//         Sign out
+//       </button>
+//     )
+//   );
+// }
 
 
 export default App
