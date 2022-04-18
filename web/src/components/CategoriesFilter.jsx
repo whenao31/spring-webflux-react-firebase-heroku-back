@@ -20,9 +20,7 @@ const CategoriesFilter = ({fetchFunction, userId}) => {
         dispatch(filterByCategory(event.target.value));
     }
     const clearFilterHandle = () => {
-        console.log("will clear any filtering!");
         dispatch(clearFilter());
-        console.log(fetchFunction);
         userId ? dispatch(fetchFunction(userId)) : dispatch(fetchFunction());
         setBtnDisabled(false)
         setSelectedButton("SELECT...");
