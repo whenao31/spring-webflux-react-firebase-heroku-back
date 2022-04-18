@@ -1,14 +1,11 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
 } from 'react-router-dom'
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/auth";
-import { login, logout } from './actions/authActions';
+import { login, } from './actions/authActions';
 
 import { PublicNavbar, PrivateNavbar, Footer } from './components/Navbar'
 import HomePage from './pages/HomePage'
@@ -17,25 +14,30 @@ import QuestionsPage from './pages/QuestionsPage'
 import QuestionFormPage from './pages/QuestionFormPage'
 import AnswerFormPage from './pages/AnswerFormPage'
 import OwnerQuestionsPage from './pages/OwnerQuestionsPage'
+import UserFormPage from './pages/UserFormPage';
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, SignIn, SignOut } from './firebase';
-
-// firebase.initializeApp({
-//   apiKey: "AIzaSyDFppjnE3PiDqZ1OlixWt40xLhvG6GsYVQ",
-//   authDomain: "question-answers-app-3f0da.firebaseapp.com",
-//   projectId: "question-answers-app-3f0da",
-//   storageBucket: "question-answers-app-3f0da.appspot.com",
-//   messagingSenderId: "930178625473",
-//   appId: "1:930178625473:web:7d47ab9af63973337f0940"
-// });
-
-// const auth = firebase.auth();
+import { auth, SignOut } from './firebase';
+import Modal from './components/Modal/Modal';
+import LoginForm from './components/LoginForm';
 
 const App = ({ dispatch }) => {
   const [user] = useAuthState(auth);
   if(user){
     dispatch(login(user.email, user.uid))
   }
+
+  const initialState = {
+    show: false
+  };
+
+  const [state, setState] = useState(initialState);
+
+  const showModal = e => {
+    setState({
+      show: !state.show
+    });
+  };
+
   return (
     <Router>
       {user ?
@@ -43,7 +45,7 @@ const App = ({ dispatch }) => {
           <PrivateNavbar />
           <Switch>
             <Route exact path="/" component={() => {
-              return <HomePage><SignOut dispatch={dispatch} /></HomePage>
+              return <HomePage><SignOut dispatch={dispatch} /><br/><br/></HomePage>
             }} />
             <Route exact path="/questions" component={QuestionsPage} />
             <Route exact path="/question/:id" component={SingleQuestionPage} />
@@ -57,9 +59,24 @@ const App = ({ dispatch }) => {
           <PublicNavbar />
           <Switch>
             <Route exact path="/" component={() => {
-              return <HomePage><SignIn dispatch={dispatch} /></HomePage>
+              return <HomePage>
+                        <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+                          <button
+                            className="button_modal"
+                            hidden={state.show}
+                            onClick={e => {
+                              showModal(e);
+                            }}
+                          >
+                            {" "}
+                            LogIn{" "}
+                          </button>
+                        </div>
+                        <Modal onClose={showModal} show={state.show} ><LoginForm/><br/><br/></Modal>
+                      </HomePage>
             }} />
             <Route exact path="/questions" component={QuestionsPage} />
+            <Route exact path="/register" component={UserFormPage} />
             <Route exact path="/question/:id" component={SingleQuestionPage} />
             <Route exact path="/answer/:id" component={AnswerFormPage} />
             <Redirect to="/" />
@@ -70,31 +87,5 @@ const App = ({ dispatch }) => {
     </Router>
   )
 }
-
-
-// function SignIn() {
-//   const signInWithGoogle = () => {
-//     const provider = new firebase.auth.GoogleAuthProvider();
-//     auth.signInWithPopup(provider);
-//   };
-//   return <button className="button right" onClick={signInWithGoogle}>Sign in with google</button>;
-// }
-
-// function SignOut({ dispatch }) {
-//   return (
-//     auth.currentUser && (
-//       <button
-//         className="button right"
-//         onClick={() => {
-//           dispatch(logout())
-//           auth.signOut();
-//         }}
-//       >
-//         Sign out
-//       </button>
-//     )
-//   );
-// }
-
 
 export default App

@@ -35,50 +35,84 @@ const auth = getAuth(app);
 const db = getFirestore(app)
 const googleProvider = new GoogleAuthProvider();
 
-function SignIn() {
-    const signInWithGoogle = async () => {
-        try {
-          const res = await signInWithPopup(auth, googleProvider);
-          const user = res.user;
-          const q = query(collection(db, "users"), where("uid", "==", user.uid));
-          const docs = await getDocs(q);
-          if (docs.docs.length === 0) {
-            await addDoc(collection(db, "users"), {
-              uid: user.uid,
-              name: user.displayName,
-              authProvider: "google",
-              email: user.email,
-            });
-          }
-        } catch (err) {
-          console.error(err);
-          alert(err.message);
+const signInWithGoogle = async () => {
+    try {
+        const res = await signInWithPopup(auth, googleProvider);
+        const user = res.user;
+        const q = query(collection(db, "users"), where("uid", "==", user.uid));
+        const docs = await getDocs(q);
+        if (docs.docs.length === 0) {
+        await addDoc(collection(db, "users"), {
+            uid: user.uid,
+            name: user.displayName,
+            authProvider: "google",
+            email: user.email,
+        });
         }
-      };
-
-    return <button className="button right" onClick={signInWithGoogle}>Sign in with google</button>;
-  }
+    } catch (err) {
+        console.error(err);
+        alert(err.message);
+    }
+};
   
-  function SignOut({ dispatch }) {
+function SignOut({ dispatch }) {
     return (
-      auth.currentUser && (
+        auth.currentUser && (
         <button
-          className="button right"
-          onClick={() => {
+            className="button right"
+            onClick={() => {
             dispatch(logout())
             auth.signOut();
-          }}
+            }}
         >
-          Sign out
+            Sign out
         </button>
-      )
+        )
     );
 }
+
+const logInWithEmailAndPassword = async (email, password) => {
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+  } catch (err) {
+    console.error(err);
+    alert(err.message);
+  }
+};
+const registerWithEmailAndPassword = async (firstName, lastName, email, password, profileImage) => {
+  try {
+    const res = await createUserWithEmailAndPassword(auth, email, password);
+    const user = res.user;
+    await addDoc(collection(db, "users"), {
+      uid: user.uid,
+      firstName,
+      lastName,
+      authProvider: "local",
+      email,
+      profileImage
+    });
+  } catch (err) {
+    console.error(err);
+    alert(err.message);
+  }
+};
+const sendPasswordReset = async (email) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
+    alert("Password reset link sent!");
+  } catch (err) {
+    console.error(err);
+    alert(err.message);
+  }
+};
 
 export {
     auth,
     app,
     db,
-    SignIn,
+    signInWithGoogle,
     SignOut,
+    logInWithEmailAndPassword,
+    registerWithEmailAndPassword,
+    sendPasswordReset,
 }
