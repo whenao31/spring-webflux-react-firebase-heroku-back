@@ -19,6 +19,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, SignOut } from './firebase';
 import Modal from './components/Modal/Modal';
 import LoginForm from './components/LoginForm';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 
 const App = ({ dispatch }) => {
   const [user] = useAuthState(auth);
@@ -77,6 +78,7 @@ const App = ({ dispatch }) => {
             }} />
             <Route exact path="/questions" component={QuestionsPage} />
             <Route exact path="/register" component={UserFormPage} />
+            <Route exact path="/resetpwd" component={ResetPasswordPage} />
             <Route exact path="/question/:id" component={SingleQuestionPage} />
             <Route exact path="/answer/:id" component={AnswerFormPage} />
             <Redirect to="/" />

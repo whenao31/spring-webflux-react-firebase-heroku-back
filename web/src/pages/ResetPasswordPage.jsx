@@ -1,15 +1,22 @@
-import React, { useState} from 'react'
+import React, { useState, useEffect} from 'react'
+import { useAuthState } from 'react-firebase-hooks/auth'
 import { useForm } from 'react-hook-form'
-import { useSelector } from 'react-redux'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useHistory } from 'react-router-dom'
 import "../assets/styles/login.css"
-import { logInWithEmailAndPassword, signInWithGoogle } from '../firebase'
+import { auth, sendPasswordReset } from '../firebase'
 
-const LoginForm = () => {
+const ResetPasswordPage = () => {
 
-    const {loading, hasErrors} = useSelector((state) => state);
-    const { handleSubmit, formState: { errors }, register } = useForm();
+    const [user, loading, error] = useAuthState(auth);
+    const { handleSubmit, register } = useForm();
     const [validateData, setValidate] = useState(false)
+
+    const history = useHistory();
+
+    useEffect(() => {
+        if (loading) return;
+        if (user) history.push("/")
+    }, [user, loading]);
 
     const onSubmit = (data) => {
         if(!data.email.trim()){
@@ -17,13 +24,14 @@ const LoginForm = () => {
             return ;
         }
         setValidate(false);
-        logInWithEmailAndPassword(data.email, data.password)
+        console.log(data.email);
+        sendPasswordReset(data.email)
     }
 
     return (
         <div className='login'>
             <section className='login__container'>
-                <h3>Log-in info</h3>
+                <h3> Reset password</h3>
                 <form onSubmit={handleSubmit(onSubmit)} >
                     <div className='container'>
                         <input 
@@ -34,32 +42,16 @@ const LoginForm = () => {
                         />
                         {validateData && <p style={{color: "red", fontSize: "12px"}}>"blank spaces not allowed"</p>}
                     </div>
-                    <div className='container'>
-                        <input 
-                            type="password"
-                            placeholder='Your password'
-                            required
-                            {...register("password", { required: true, minLength: 6})}
-                        />
-                        {errors.password?.type === 'minLength' && <p style={{color: "red", fontSize: "12px"}}>"minimum 6 characters long"</p>}
-                    </div>
                     <div>
                         <button 
                             type='submit'
                             className='login__btn'
                             disabled={loading}
                         >
-                        {loading ? "Logging in..." : "Login"}
+                        Send reset email
                         </button>
                     </div>
                 </form>
-                <div>
-                    <button className="login__btn login__google" onClick={signInWithGoogle}>Sign in with google</button>
-                </div>
-                <small>
-                    Forgot password? &nbsp;&nbsp;
-                    <NavLink to="/resetpwd">Reset password.</NavLink>
-                </small>
                 <br/>
                 <small>
                     Don't have an account? &nbsp;&nbsp;
@@ -70,4 +62,4 @@ const LoginForm = () => {
     )
 }
 
-export default LoginForm
+export default ResetPasswordPage
