@@ -21,6 +21,7 @@ export const PrivateNavbar = () => (
       <NavLink to="/questions">Questions</NavLink>
       <NavLink to="/new">New</NavLink>
       <NavLink to="/list">My Questions List</NavLink>
+      <NavLink to="/profile">User info</NavLink>
     </section>
   </nav>
 )

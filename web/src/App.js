@@ -53,6 +53,7 @@ const App = ({ dispatch }) => {
             <Route exact path="/list" component={OwnerQuestionsPage} />
             <Route exact path="/answer/:id" component={AnswerFormPage} />
             <Route exact path="/new" component={QuestionFormPage} />
+            <Route exact path="/profile"><UserFormPage mode={"profile"} /></Route>
             <Redirect to="/" />
           </Switch>
         </> :
@@ -77,7 +78,7 @@ const App = ({ dispatch }) => {
                       </HomePage>
             }} />
             <Route exact path="/questions" component={QuestionsPage} />
-            <Route exact path="/register" component={UserFormPage} />
+            <Route exact path="/register"><UserFormPage /></Route> 
             <Route exact path="/resetpwd" component={ResetPasswordPage} />
             <Route exact path="/question/:id" component={SingleQuestionPage} />
             <Route exact path="/answer/:id" component={AnswerFormPage} />

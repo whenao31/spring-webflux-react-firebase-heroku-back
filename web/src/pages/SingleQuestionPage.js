@@ -12,6 +12,7 @@ const SingleQuestionPage = ({ match, }) => {
   const questionState = useSelector((state) => state.question);
   const {loading, question, hasErrors, redirect} = questionState;
 
+  const {firstName, profileImage} = useSelector((state) => state.auth);
   const userId = useSelector((state) => state.auth.uid)
 
   const { id } = match.params
@@ -30,9 +31,16 @@ const SingleQuestionPage = ({ match, }) => {
   }
 
   const renderAnswers = () => {
-    return (question.answers && question.answers.length) ? question.answers.map(answer => (
-      <Answer key={answer.id} answer={answer} />
-    )) : <p>Empty answer!</p>;
+    return (question.answers && question.answers.length) ? question.answers.map(answer => {
+        const userInfo = {firstName: firstName, profileImage: profileImage};
+        return (
+          <Answer 
+            key={answer.id}
+            answer={answer}
+          />
+        )
+      }
+    ) : <p>Empty answer!</p>;
   }
 
   return (

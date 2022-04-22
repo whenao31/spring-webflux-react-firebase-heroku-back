@@ -7,7 +7,7 @@ import { auth, sendPasswordReset } from '../firebase'
 
 const ResetPasswordPage = () => {
 
-    const [user, loading, error] = useAuthState(auth);
+    const [user, loading] = useAuthState(auth);
     const { handleSubmit, register } = useForm();
     const [validateData, setValidate] = useState(false)
 
@@ -24,7 +24,6 @@ const ResetPasswordPage = () => {
             return ;
         }
         setValidate(false);
-        console.log(data.email);
         sendPasswordReset(data.email)
     }
 

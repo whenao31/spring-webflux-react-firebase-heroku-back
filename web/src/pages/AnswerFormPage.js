@@ -4,13 +4,16 @@ import { useHistory } from "react-router-dom";
 import {  fetchQuestion, postAnswer } from '../actions/questionActions'
 import { Question } from '../components/Question'
 import { useSelector, useDispatch } from "react-redux";
+import { findEmailByUserId } from "../firebase"
 
 const FormPage = ({ match }) => {
     
     const questionState = useSelector((state) => state.question);
     const {loading, question, hasErrors, redirect} = questionState;
 
-    const userId = useSelector((state) => state.auth.uid);
+    const replyUserId = useSelector((state) => state.auth.uid);
+    const userEmail = useSelector((state) => state.auth.email);
+    const questionUserEmail = useSelector((state) => state.auth.questionUserEmail);
 
     const dispatch = useDispatch();
     
@@ -19,14 +22,22 @@ const FormPage = ({ match }) => {
     const history = useHistory();
 
     const onSubmit = data => {
-        data.userId =  userId;
+        data.userId =  replyUserId;
         data.questionId = id;
+        data.questionUserEmail = questionUserEmail;
         dispatch(postAnswer(data));
     };
 
     useEffect(() => {
         dispatch(fetchQuestion(id))
     }, [dispatch, id])
+
+    useEffect(() => {
+        console.log("estoy en form answer" + question.userId);
+        if (question.userId !== undefined)
+            findEmailByUserId(question.userId, dispatch);
+    }, [dispatch, question.userId])
+    
 
     useEffect(() => {
         if (redirect) {
@@ -49,7 +60,7 @@ const FormPage = ({ match }) => {
 
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
-                    <label for="answer">Answer</label>
+                    <label htmlFor="answer">Answer</label>
                     <textarea id="answer" {...register("answer", { required: true, maxLength: 300 })} />
                 </div>
                 <button type="submit" className="button" disabled={loading} >{

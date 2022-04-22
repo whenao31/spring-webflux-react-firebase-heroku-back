@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { NavLink } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
 import { fetchOwnerQuestions, deleteQuestion } from '../actions/questionActions'
@@ -60,7 +61,11 @@ const OwnerQuestionsPage = () => {
     return (
         <section>
             <h1>Questions</h1>
-            <CategoriesFilter fetchFunction={fetchOwnerQuestions} userId={userId}/>
+            {/* {
+                // questions.length > 0 ?  */}
+                <CategoriesFilter fetchFunction={fetchOwnerQuestions} userId={userId}/> {/*:*/} 
+                {/* <p>You haven't made any question yet...We encourage you to do it  <NavLink to="/new">here!</NavLink></p> */}
+            {/* }             */}
             {renderQuestions()}
         </section>
     )

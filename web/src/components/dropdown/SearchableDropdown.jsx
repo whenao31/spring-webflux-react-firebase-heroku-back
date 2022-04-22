@@ -9,7 +9,7 @@ export const SearchableDropdown = ({list, onChangeHandler, handleKeyDown, setFir
     
     return (
         <>
-            <h2>Search question</h2>
+            <h3>Search question</h3>
             <div style={{display: 'flex', flexDirection: 'column', padding: '1rem', alignItems: 'cente', position: 'relative'}}>
                 <Input
                     onChange={(inputValue) => { 

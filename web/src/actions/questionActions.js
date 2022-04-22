@@ -100,6 +100,7 @@ export function deleteQuestion(id) {
 
 export function postAnswer(answer) {
     return async dispatch => {
+        console.log(JSON.stringify(answer));
         dispatch(loading())
         try {
             await fetch(`${URL_BASE}/add`,

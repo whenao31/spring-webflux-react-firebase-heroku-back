@@ -8,7 +8,6 @@ import{
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
     sendPasswordResetEmail,
-    signOut,
 } from "firebase/auth";
 import {
     getFirestore,
@@ -17,9 +16,11 @@ import {
     collection,
     where,
     addDoc,
+    doc,
+    updateDoc,
 }from "firebase/firestore";
 
-import { logout } from './actions/authActions';
+import { getProfile, getUserEmail, logout } from './actions/authActions';
 
 const firebaseConfig = {
     apiKey: "AIzaSyDFppjnE3PiDqZ1OlixWt40xLhvG6GsYVQ",
@@ -44,7 +45,8 @@ const signInWithGoogle = async () => {
         if (docs.docs.length === 0) {
         await addDoc(collection(db, "users"), {
             uid: user.uid,
-            name: user.displayName,
+            firstName: user.displayName.split(" ")[0],
+            lastName: user.displayName.split(" ")[1],
             authProvider: "google",
             email: user.email,
         });
@@ -105,6 +107,48 @@ const sendPasswordReset = async (email) => {
     alert(err.message);
   }
 };
+const findUserById = async (userId, dispatch)=> {
+  try {
+    const q = query(collection(db, "users"), where("uid", "==", userId));
+    const docs = await getDocs(q);
+    if (docs.docs.length > 0){
+      const { firstName, lastName, profileImage} = docs.docs[0].data();
+      dispatch(getProfile(firstName, lastName, profileImage, docs.docs[0].id))
+      return docs.docs[0].data();
+    }
+  } catch (err) {
+    console.error(err);
+    alert(err.message);
+  }
+};
+const findEmailByUserId = async (userId, dispatch)=> {
+  try {
+    const q = query(collection(db, "users"), where("uid", "==", userId));
+    const docs = await getDocs(q);
+    if (docs.docs.length > 0){
+      const userEmail = docs.docs[0].data().email;
+      dispatch(getUserEmail(userEmail))
+      return userEmail;
+    }
+  } catch (err) {
+    console.error(err);
+    alert(err.message);
+  }
+};
+const updateUserInfo =  async (documentId, userInfo, dispatch) => {
+  try {
+    const userRef = doc(db, "users", documentId)
+    await updateDoc(userRef, {
+      firstName: userInfo.firstName,
+      lastName: userInfo.lastName,
+      profileImage: userInfo.profileImage
+    });
+    dispatch(getProfile(userInfo.firstName, userInfo.lastName, userInfo.profileImage, documentId));
+  } catch (err) {
+    console.error(err);
+    alert(err.message);
+  }
+}
 
 export {
     auth,
@@ -115,4 +159,7 @@ export {
     logInWithEmailAndPassword,
     registerWithEmailAndPassword,
     sendPasswordReset,
+    findUserById,
+    updateUserInfo,
+    findEmailByUserId,
 }
