@@ -15,6 +15,8 @@ public class AnswerDTO {
     private String answer;
 
     private Integer position;
+    @NotBlank
+    private String questionUserEmail;
 
 
     public AnswerDTO() {
@@ -32,6 +34,13 @@ public class AnswerDTO {
         this.userId = userId;
         this.questionId = questionId;
         this.answer = answer;
+    }
+    public AnswerDTO(String id, @NotBlank String questionId, @NotBlank String userId, @NotBlank String answer, @NotBlank String userEmail) {
+        this.id = id;
+        this.userId = userId;
+        this.questionId = questionId;
+        this.answer = answer;
+        this.questionUserEmail = userEmail;
     }
 
     public String getId() {
@@ -75,6 +84,14 @@ public class AnswerDTO {
         this.answer = answer;
     }
 
+    public String getQuestionUserEmail() {
+        return questionUserEmail;
+    }
+
+    public void setQuestionUserEmail(String questionUserEmail) {
+        this.questionUserEmail = questionUserEmail;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -94,6 +111,7 @@ public class AnswerDTO {
                 "userId='" + userId + '\'' +
                 ", questionId='" + questionId + '\'' +
                 ", answer='" + answer + '\'' +
+                ", questionUserEmail='" + questionUserEmail + '\'' +
                 '}';
     }
 }
